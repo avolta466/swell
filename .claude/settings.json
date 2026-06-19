@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"\nconst https = require('https');\nconst fs = require('fs');\nconst os = require('os');\nconst path = require('path');\nconst dir = path.join(os.homedir(), '.claude', 'tasks', 'cinnamon');\nfs.mkdirSync(dir, { recursive: true });\nhttps.get('https://supportive-presence.up.railway.app/tasks', res => {\n  let d = '';\n  res.on('data', c => d += c);\n  res.on('end', () => {\n    try {\n      const tasks = JSON.parse(d);\n      tasks.forEach((task, i) => {\n        fs.writeFileSync(path.join(dir, (i+1)+'.json'), JSON.stringify({\n          id: String(i+1),\n          subject: task.claimedBy ? task.subject+' ('+task.claimedBy+')' : task.subject,\n          description: task.description || '',\n          status: task.status,\n          blocks: [],\n          blockedBy: []\n        }, null, 2));\n      });\n      const existing = fs.readdirSync(dir).map(f => parseInt(f)).filter(n => !isNaN(n) && n > tasks.length);\n      existing.forEach(n => fs.unlinkSync(path.join(dir, n+'.json')));\n    } catch(e) {}\n  });\n}).on('error', () => {});\n\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"\nconst https = require('https');\nconst fs = require('fs');\nconst os = require('os');\nconst path = require('path');\nconst dir = path.join(os.homedir(), '.claude', 'tasks', 'cinnamon');\nfs.mkdirSync(dir, { recursive: true });\nhttps.get('https://supportive-presence.up.railway.app/tasks', res => {\n  let d = '';\n  res.on('data', c => d += c);\n  res.on('end', () => {\n    try {\n      const tasks = JSON.parse(d);\n      tasks.forEach((task, i) => {\n        fs.writeFileSync(path.join(dir, (i+1)+'.json'), JSON.stringify({\n          id: String(i+1),\n          subject: task.claimedBy ? task.subject+' ('+task.claimedBy+')' : task.subject,\n          description: task.description || '',\n          status: task.status,\n          blocks: [],\n          blockedBy: []\n        }, null, 2));\n      });\n      const existing = fs.readdirSync(dir).map(f => parseInt(f)).filter(n => !isNaN(n) && n > tasks.length);\n      existing.forEach(n => fs.unlinkSync(path.join(dir, n+'.json')));\n    } catch(e) {}\n  });\n}).on('error', () => {});\n\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"\nconst https = require('https');\nconst fs = require('fs');\nconst os = require('os');\nconst path = require('path');\nconst dir = path.join(os.homedir(), '.claude', 'tasks', 'cinnamon');\nfs.mkdirSync(dir, { recursive: true });\nhttps.get('https://supportive-presence.up.railway.app/tasks', res => {\n  let d = '';\n  res.on('data', c => d += c);\n  res.on('end', () => {\n    try {\n      const tasks = JSON.parse(d);\n      tasks.forEach((task, i) => {\n        fs.writeFileSync(path.join(dir, (i+1)+'.json'), JSON.stringify({\n          id: String(i+1),\n          subject: task.claimedBy ? task.subject+' ('+task.claimedBy+')' : task.subject,\n          description: task.description || '',\n          status: task.status,\n          blocks: [],\n          blockedBy: []\n        }, null, 2));\n      });\n      const existing = fs.readdirSync(dir).map(f => parseInt(f)).filter(n => !isNaN(n) && n > tasks.length);\n      existing.forEach(n => fs.unlinkSync(path.join(dir, n+'.json')));\n    } catch(e) {}\n  });\n}).on('error', () => {});\n\""
+          }
+        ]
+      }
+    ]
+  }
+}
